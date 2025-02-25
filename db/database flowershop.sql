@@ -31,6 +31,8 @@ ADD CONSTRAINT fk_plants FOREIGN KEY (fk_plants) REFERENCES plants(id_plants);
 ALTER TABLE favorite_plants 
 ADD CONSTRAINT fk_users FOREIGN KEY (fk_users) REFERENCES users(id_user);
 
+ALTER TABLE users MODIFY password TEXT NOT NULL;
+
 INSERT INTO plants (name, season, leaves, color, instructions) VALUES
 ('Lavanda', 'Primavera', 'Alargadas y estrechas', 'Violeta', 'Plantar en un lugar soleado y regar moderadamente. Prefiere suelos bien drenados.'),
 ('Monstera Deliciosa', 'Verano', 'Grandes y perforadas', 'Verde', 'Colocar en luz indirecta brillante y regar cuando la tierra esté seca en la superficie.'),
