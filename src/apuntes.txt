@@ -1,0 +1,4 @@
+nodemon -L src/index.js
+
+npm install express
+npm install cors
