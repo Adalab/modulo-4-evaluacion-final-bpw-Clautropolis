@@ -158,43 +158,13 @@ GET /users/1/favorites
 ]
 ```
 
-#### 7. Añadir una planta a favoritos
-- **Método:** `POST`
-- **URL:** `/users/:id/favorites`
-- **Body (JSON):**
-```json
-{
-  "plant_id": 3
-}
-```
-##### 📂 Respuesta Ejemplo:
-```json
-{
-  "success": true,
-  "message": "Planta agregada a favoritos"
-}
-```
-
-#### 8. Eliminar una planta de favoritos
-- **Método:** `DELETE`
-- **URL:** `/users/:id/favorites/:plantId`
-##### 📂 Ejemplo:
-```sh
-DELETE /users/1/favorites/3
-```
-##### 📂 Respuesta Ejemplo:
-```json
-{
-  "success": true,
-  "message": "Planta eliminada de favoritos"
-}
-```
-
 ---
 ## 🔧 Mejoras Futuras
+- Terminar la página de front que cree una interfaz para que el usuario pueda realizar las tareas desde una página fácil de entender.
+- Terminar de desarrollar la documentación de la API, ahora en desarrollo
 - Agregar paginación en las consultas.
 - Permitir filtrar plantas por temporada o características.
-- Añadir un servidor de estáticos para que sea visible desde el front
+- Desplegar el proyecto en Render, utilizando FreeDB para la creación de la base de datos.
 
 ## 🌟 Contribuciones
 Si quieres contribuir, ¡abre un PR en GitHub!
