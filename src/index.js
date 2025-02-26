@@ -5,6 +5,7 @@ const mysql = require("mysql2/promise");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
+const path = require('path');
 
 //Crear el servidor
 const server = express();
@@ -334,12 +335,41 @@ server.get('/userslist', auth, async (req, res)=> {
     }
 });
 
+//Endpoints de favoritos
+
+//Listar las plantas favoritas de un usuario
+server.get("/user/:id/favorites", async (req, res) => {
+    try {
+      const connection = await getConnection();
+      const {id} = req.params;
+      const sqlSelectFavs = "SELECT plants.id_plants, plants.name, plants.color, plants.season, plants.leaves, plants.instructions, users.userName FROM plants INNER JOIN favorite_plants ON favorite_plants.fk_plants = plants.id_plants INNER JOIN users ON users.id_user = favorite_plants.fk_users WHERE id_user = ?";
+      const [results] = await connection.query(sqlSelectFavs, [id]);
+      connection.end();
+  
+      if (results.length > 0) {
+        res.status(200).json({
+          success: true,
+          info: { count: results.length },
+          results: results,
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "No se encontró ninguna planta favorita",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: "Error al obtener las plantas favoritas, inténtalo de nuevo más tarde",
+      });
+    }
+  });
 
 
-/*
 //Servidores estáticos
-const urlServerStatic = "./web";
+const urlServerStatic = path.join(__dirname, 'web'); 
 server.use(express.static(urlServerStatic));
 
 
-*/

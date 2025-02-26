@@ -192,9 +192,9 @@ DELETE /users/1/favorites/3
 
 ---
 ## 🔧 Mejoras Futuras
-- Implementar **JWT** para autenticación de usuarios.
 - Agregar paginación en las consultas.
 - Permitir filtrar plantas por temporada o características.
+- Añadir un servidor de estáticos para que sea visible desde el front
 
 ## 🌟 Contribuciones
 Si quieres contribuir, ¡abre un PR en GitHub!

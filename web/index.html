@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Plantas API</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>Página del servidor estático</h1>
+    <h1>🌱 Tienda de Plantas</h1>
+    
+    <h2>📋 Lista de Plantas</h2>
+    <ul id="plant-list"></ul>
+
+    <h2>🔎 Buscar Favoritos de un Usuario</h2>
+    <input type="number" id="userIdInput" placeholder="ID del usuario" class="input_search-js">
+    <button class="button_search-js">Buscar</button>
+    <p class="error-message"></p>
+    <ul id="favorites-list"></ul>
+
+    <script src="/app.js"></script>
 </body>
 </html>
