@@ -190,6 +190,32 @@ server.delete("/plants/:id", async (req, res) => {
   }
 });
 
+//Vista de una de las plantas
+server.get('/plant/:plantId', async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const idPlant = req.params.plantId;
+        const foundPlants = `SELECT * FROM plants WHERE id_plants = ${idPlant}`;
+        const [foundPlantsResult] = await connection.query(foundPlants);
+        
+        if (foundPlantsResult.length === 0) {
+            //return res.status(404).json({ success: false, message: "Planta no encontrada" });
+            res.render('not-found-plant');
+        } else {
+            //res.status(200).json({success: true, result: foundPlantsResult})
+            res.render('plant', {plant : foundPlantsResult [0]});
+
+        }
+        } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Error al mostrar la planta:",
+            error,
+    })
+    
+}});
+
+
 //Endpoint autenticación y autorización users
 
 //Registrar un usuario
@@ -250,7 +276,7 @@ server.post("/login", async (req, res) => {
           email: resultUser[0].email,
           id: resultUser[0].id,
         };
-        const token = jwt.sign(infoToken, "nectarina", { expiresIn: "1h" });
+        const token = jwt.sign(infoToken, process.env.CLAVE_SECRETA, { expiresIn: "1h" });
         res.status(200).json({ success: true, token: token });
       } else {
         res
@@ -258,7 +284,7 @@ server.post("/login", async (req, res) => {
           .json({ success: false, message: "contraseña incorrecta" });
       }
     } else {
-      res.status(200).json({ success: false, message: "email incorrecta" });
+      res.status(200).json({ success: false, message: "email incorrecto" });
     }
   } catch (error) {
     res.status(500).json({
@@ -267,6 +293,48 @@ server.post("/login", async (req, res) => {
     });
   }
 });
+
+//Función middleware
+function auth(req, res, next) {
+    
+    const tokenString = req.headers.authorization;
+    
+    if(!tokenString) {
+      res.status(401).json({success: false, message: "No está autorizado. Falta el token."})
+    } else {
+  
+      try {
+        const token = tokenString.split(" ")[1];
+
+        const verifyToken = jwt.verify(token, process.env.CLAVE_SECRETA); 
+        
+        req.data = verifyToken;
+        next();
+  
+      } catch (error) {
+        res.status(403).json({success: false, message: "Token inválido o expirado"})
+      }
+      
+    }
+};
+
+//Lista de usuarios a la que solo se accede si estás autorizado
+server.get('/userslist', auth, async (req, res)=> {
+    try {
+        console.log(req.data);
+  
+        const connection = await getConnection();
+        const sqlUsersList = "SELECT id_user, userName, city, age, email FROM users";
+        const [results] = await connection.query(sqlUsersList);
+
+        res.status(200).json({success: true, data: results});
+
+    } catch (error) {
+        res.status(500).json({success: false, message: "Error al obtener la lista de usuarios"})
+    }
+});
+
+
 
 /*
 //Servidores estáticos
